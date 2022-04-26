@@ -1,40 +1,51 @@
-import Sequelize, { DataTypes }  from 'sequelize';
+import Sequelize  from 'sequelize';
 import { DPADMWIN } from '../database/database';
 
 export const Contratos = DPADMWIN.define("TBCONTRATOS", {
-    CON_CODIGO: {
+    codigo: {
         type: Sequelize.DECIMAL,
-        primaryKey: true
+        primaryKey: true,
+        field:'CON_CODIGO'
     },
-    CON_DESCRI: {
-        type: Sequelize.CHAR
+    descripcion: {
+        type: Sequelize.CHAR,
+        field:'CON_DESCRI'
     },
-    CON_COMENT: {
-        type: Sequelize.CHAR
+    comentario: {
+        type: Sequelize.CHAR,
+        field:'CON_COMENT'
     },
-    CON_CODCLI: {
-        type: Sequelize.CHAR
+    codigoCliente: {
+        type: Sequelize.CHAR,
+        field:'CON_CODCLI'
     },
-    CON_CODMON: {
-        type: Sequelize.CHAR
+    moneda: {
+        type: Sequelize.CHAR,
+        field: 'CON_CODMON'
     },
-    CON_UNIDO: {
-        type: Sequelize.CHAR
+    unido: {
+        type: Sequelize.CHAR,
+        field:'CON_UNIDO'
     },
-    CON_DESCU: {
-        type: Sequelize.DECIMAL
+    descuento: {
+        type: Sequelize.DECIMAL,
+        field:'CON_DESCU'
     },
-    CON_FINI: {
-        type: Sequelize.DATE
+    fechaInicio: {
+        type: Sequelize.DATE,
+        field:'CON_FINI'
     },
-    CON_FFINCO: {
-        type: Sequelize.DATE
+    fechaFinal: {
+        type: Sequelize.DATE,
+        field:'CON_FFINCO'
     },
-    CON_LISTA: {
-        type: Sequelize.CHAR
+    lista: {
+        type: Sequelize.CHAR,
+        field:'CON_LISTA'
     },
-    CON_TIPDOC: {
-        type: Sequelize.CHAR
+    tipoDocumento: {
+        type: Sequelize.CHAR,
+        field:'CON_TIPDOC'
     },
 
 }, {
