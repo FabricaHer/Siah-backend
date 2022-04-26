@@ -1,7 +1,8 @@
 import Sequelize  from 'sequelize';
-import { DPADMWIN } from '../database/database';
+import { MySQL } from '../database/database';
 
-export const Contratos = DPADMWIN.define("TBCONTRATOS", {
+
+export const Contratos = MySQL.define("TBCONTRATOS", {
     codigo: {
         type: Sequelize.DECIMAL,
         primaryKey: true,
