@@ -1,5 +1,6 @@
-import { Contratos } from '../models/contratos.models';
+import  {Contratos}  from '../models/contratos.models';
 import Boom from '@hapi/boom';
+
 class ConstratoServices {
   constructor() {
     this.idMax = 0;
@@ -64,7 +65,21 @@ class ConstratoServices {
         throw new Error(error)
     }
   }
-  actualizar() {}
+  async actualizar(codigo,changes) {
+    
+    try {
+
+      const contratoUpdated = await Contratos.update(
+        {...changes},
+        {where:{
+        codigo: codigo
+      }});
+
+      return contratoUpdated
+    } catch (error){
+      throw new Error(error)
+    }
+  }
   borrar() {}
 }
 

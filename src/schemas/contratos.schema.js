@@ -51,4 +51,18 @@ export const CreateContratoSchema = joi.object({
 
 })
 
+export const UpdateContratoSchema = joi.object({
+
+    descripcion  : descripcion,
+    comentario : comentario,
+    codigoCliente : codigoCliente,
+    moneda  : moneda,
+    unido : unido,
+    descuento : descuento,
+    fechaInicio : fechaInicio,
+    fechaFinal : fechaFinal,
+    lista : lista,
+    tipoDocumento: tipoDocumento
+   
+   })
 

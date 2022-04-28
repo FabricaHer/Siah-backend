@@ -58,3 +58,23 @@ export async function createContrato(req, res,next) {
   }
     }
 
+//Actualizar Contrato
+
+export async function updateProject(req, res, next) {
+  try {
+    const { codigo } = req.params;
+  
+    const changes = req.body;
+    const contratoUpdated = await services.actualizar(codigo, changes)
+      return res.json({
+        message: 'Project updated',
+        data: contratoUpdated
+    })
+      
+    } catch (error) {
+      next(error)
+    }
+     
+  
+
+  }

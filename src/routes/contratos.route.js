@@ -4,12 +4,14 @@ import {
   getQuerySchema,
   CreateContratoSchema,
   getContratoSchema,
+  UpdateContratoSchema,
 } from '../schemas/contratos.schema';
 import {
   createContrato,
   getMaxContrato,
   getOneContratos,
   getTipoContratos,
+  updateProject,
 } from '../controllers/contratos.controllers';
 const router = Router();
 
@@ -21,5 +23,8 @@ router.get(
   getOneContratos
 );
 router.post('/', validatorHandle(CreateContratoSchema, 'body'), createContrato);
+router.put('/:codigo',
+validatorHandle(getContratoSchema,'params') ,
+validatorHandle(UpdateContratoSchema, 'body'), updateProject);
 
 export default router;
