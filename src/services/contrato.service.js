@@ -1,4 +1,4 @@
-import  {Contratos}  from '../models/contratos.models';
+import { Contratos } from '../models/contratos.models';
 import Boom from '@hapi/boom';
 
 class ConstratoServices {
@@ -31,7 +31,14 @@ class ConstratoServices {
       if (!contratos) {
         throw Boom.notFound('Contratos no encontrados');
       }
-      return contratos;
+      const newContrato = contratos.map((e) => {
+        return (e.dataValues = {
+          ...e.dataValues,
+          precios: `http://localhost:4000/api/precios/${e.dataValues.codigo}`,
+        });
+      });
+    
+      return newContrato;
     } catch (error) {
       throw new Error(error);
     }
@@ -49,35 +56,32 @@ class ConstratoServices {
     return contrato;
   }
   async crear(body) {
-    
-    try{
-     
+    try {
       const newContrato = {
-        codigo: await this.generarNuevoId() ,
-        ...body
-      }
+        codigo: await this.generarNuevoId(),
+        ...body,
+      };
       const data = await Contratos.create(newContrato);
-  
-     
-      return data
 
-    }catch(error){
-        throw new Error(error)
+      return data;
+    } catch (error) {
+      throw new Error(error);
     }
   }
-  async actualizar(codigo,changes) {
-    
+  async actualizar(codigo, changes) {
     try {
-
       const contratoUpdated = await Contratos.update(
-        {...changes},
-        {where:{
-        codigo: codigo
-      }});
+        { ...changes },
+        {
+          where: {
+            codigo: codigo,
+          },
+        }
+      );
 
-      return contratoUpdated
-    } catch (error){
-      throw new Error(error)
+      return contratoUpdated;
+    } catch (error) {
+      throw new Error(error);
     }
   }
   borrar() {}
