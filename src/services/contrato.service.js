@@ -43,11 +43,48 @@ class ConstratoServices {
       },
     });
     if (!contrato) {
-      throw Boom.notFound('Product not found');
+      throw Boom.notFound('Contrato no encontrado');
     }
 
     return contrato;
   }
+  async buscarCliente(codigoCliente) {
+    
+    let contrato = await Contratos.findAll({
+      where: {
+        codigoCliente,
+      },
+      raw : true,
+      nest : true
+    });
+    if (!contrato) {
+      throw Boom.notFound('Cliente con contrato no encontrado');
+    }
+
+      const newContrato = contrato.map((data) =>{
+        data.precios = `http://localhost/api/precios/${data.codigo}`
+        console.log(data)
+    
+    })
+    console.log(newContrato);
+    return {...newContrato}; 
+    
+  }
+
+  async eliminarContrato(codigo) {
+    
+    const contrato = await Contratos.destroy({
+        where: {
+            codigo
+        }
+    });
+    if (!contrato) {
+      throw Boom.notFound('Contrato no encontrado');
+    }
+    return contrato;
+
+}
+
   async crear(body) {
     
     try{
@@ -77,6 +114,21 @@ class ConstratoServices {
 
       return contratoUpdated
     } catch (error){
+      throw new Error(error)
+    }
+  }
+  async actualizarFecha(codigo,data){
+    try {
+      console.log(codigo,data);
+      const contratoUpdateDate = await Contratos.update(
+        {...data},
+        {where:{
+          codigo: codigo
+        }
+        }
+      );
+      return contratoUpdateDate;
+    } catch (error) {
       throw new Error(error)
     }
   }

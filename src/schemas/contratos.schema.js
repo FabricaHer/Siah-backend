@@ -27,6 +27,9 @@ const tipoDocumento = joi.string().min(3).max(3)
 export const getContratoSchema = joi.object({
     codigo: codigo.required()
 })
+export const getClientContratoSchema = joi.object({
+    codigoCliente: codigoCliente.required()
+})
 
 
 export const getQuerySchema = joi.object({
@@ -64,5 +67,5 @@ export const UpdateContratoSchema = joi.object({
     lista : lista,
     tipoDocumento: tipoDocumento
    
-   })
+})
 

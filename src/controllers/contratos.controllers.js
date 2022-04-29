@@ -13,6 +13,20 @@ export async function getOneContratos(req, res, next) {
   }
 }
 
+//Buscar por codigo de cliente
+
+export async function getContratoClient(req, res, next) {
+  const { codigoCliente } = req.params;
+  
+  try {
+    const contrato = await services.buscarCliente(codigoCliente);
+    res.json(contrato);
+  } catch (error) {
+    next(error);
+  }
+}
+
+
 //Buscar número máximo de Contrato
 
 export async function getMaxContrato(req, res, next) {
@@ -60,7 +74,7 @@ export async function createContrato(req, res,next) {
 
 //Actualizar Contrato
 
-export async function updateProject(req, res, next) {
+export async function updateContrato(req, res, next) {
   try {
     const { codigo } = req.params;
   
@@ -77,4 +91,41 @@ export async function updateProject(req, res, next) {
      
   
 
+  }
+  // Actualizar fecha
+  export async function UpdateDate(req, res, next){
+    try {
+      const { codigo } = req.params;
+      let data = req.body;
+
+    if (JSON.stringify(data) == '{}') {
+      data = { fechaFinal: '2000-00-00' };
+    }
+    console.log(data)
+    const contratoUpdateDate = await services.actualizarFecha(codigo, data)
+      return res.json({
+        message: 'Contrato actualizado',
+        data: contratoUpdateDate
+      })
+      
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  // Eliminar contrato
+
+  export async function deleteContrato(req, res, next) {
+    try {
+      const { codigo } = req.params;
+      const deleteRow = await services.eliminarContrato(codigo);
+      return res.json({
+        message: 'Contrato eliminado',
+        data: deleteRow
+      });
+
+      
+    } catch (error) {
+      next(error)
+    }
   }
