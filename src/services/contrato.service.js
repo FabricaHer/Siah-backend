@@ -24,7 +24,7 @@ class ConstratoServices {
   async buscar(where) {
     try {
       const contratos = await Contratos.findAll({
-        logging: console.log,
+        
         where: {
           ...where,
         },
@@ -32,14 +32,14 @@ class ConstratoServices {
       if (!contratos) {
         throw Boom.notFound('Contratos no encontrados');
       }
-      const newContrato = contratos.map((e) => {
+      const newContratos = contratos.map((e) => {
         return (e.dataValues = {
           ...e.dataValues,
           precios: `http://localhost:4000/api/precios/${e.dataValues.codigo}`,
         });
       });
     
-      return newContrato;
+      return newContratos;
     } catch (error) {
       throw new Error(error);
     }
