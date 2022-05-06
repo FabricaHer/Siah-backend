@@ -1,5 +1,7 @@
-import {preciosServices} from './../services/precios.services'
+import {preciosServices} from './../services/precios.service'
 const service = new preciosServices()
+
+
 export  async function getPreciosContrato(req,res,next){
   
   try {
