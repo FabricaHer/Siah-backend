@@ -14,7 +14,6 @@ import { preciosEspeciales } from './../models/preciosEspeciales.model';
 //  "isDolar":""
 // }
 export class preciosServices {
-    
   async Buscar(codigo, moneda) {
     try {
       let precioBolivares = [];
@@ -62,37 +61,39 @@ export class preciosServices {
   }
 
   async Crear(body) {
+    const { isDolar } = body;
+    if (isDolar) {
+      const precio = {
+        codigoProducto: body.codigoProducto,
+        unidadMedida: body.unidadMedida,
+        precioCompra: body.precioCompra,
+        precioVenta: body.precioVenta,
+        contrato: body.contrato,
+        codigoCliente: body.codigoCliente,
+      };
+      const precioProducto = await preciosDolar.create(precio);
+      if (!precioProducto) {
+        throw Boom.conflict('No se puede cargar el precio en dolares')
+      }
+    }
+    else{
+      const precio = {
+        codigoInvetario: body.codigoInvetario,
+        UnidadMedida: body.unidadMedida,
+        precioVenta: body.precioVenta,
+        descuento: body.descuento,
+        fechaVencimiento: body.fechaVencimiento,
+        contrato: body.contrato
+      }
+      const precioProducto = await preciosEspeciales.create(precio)
+      if(!precioProducto){
+        throw Boom.conflict('No se puede cargar el precio en bolivares')
+      }
+    }
+    return {
+      message:  'Producto Creado' ,
+    };
 
-     try {
-         
-         const { isDolar } = body;
-         let isCreated = false;
-         if (isDolar) {
-           const precio = {
-             codigoProducto : body.codigoProducto,
-             unidadMedida: body.unidadMedida,
-             precioCompra: body.precioCompra,
-             precioVenta: body.precioVenta,
-             contrato: body.contrato,
-             codigoCliente: body.codigoCliente
-           };
-         const precioProducto =  await preciosDolar.create(precio);
-         console.log(precioProducto,'hola')
-         if(precioProducto){
-             isCreated = true
-         }
-         }
-         return {
-             message: (isCreated)?'Producto Creado':'El producto no pudo ser creado',
-             status:isCreated
-         } 
-     } catch (error) {
-         const err = (error.errors[0].validatorKey)
-         if(err === 'not_unique'){    
-          throw Boom.badData('Producto ya existente')    
-         }
-        throw new Error('Error')   
-     }
+
   }
 }
-

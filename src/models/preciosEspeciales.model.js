@@ -1,16 +1,16 @@
 import Sequelize  from 'sequelize';
 import { MySQL } from '../database/database';
 export const preciosEspeciales = MySQL.define ('TBPRECIOSESPECIALES', {
-    codigoInvetario: {
+    codigoProducto: {
         type: Sequelize.CHAR,
         primaryKey: true,
         field:'PES_CODINV'
     },
-    UnidadMedida:{
+    unidadMedida:{
         type: Sequelize.CHAR,
         field:'PES_UNDMED'
     },
-    precio:{
+    precioVenta:{
         type: Sequelize.DECIMAL,
         field:'PES_PREESP'
     },
@@ -23,7 +23,7 @@ export const preciosEspeciales = MySQL.define ('TBPRECIOSESPECIALES', {
         primaryKey: true,
         field:'PES_FVENC'
     },
-    codigoContrato: {
+    contrato: {
         type: Sequelize.DECIMAL,
         primaryKey: true,
         field:'PES_CODCON'
