@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import {errorLog,errorHandler,boomErrorHandler} from './middleware/error.handler'
 //Importing routes
 import contratosRoutes from './routes/contratos.route';
+import productosRoutes from './routes/productos.route';
 
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(morgan('dev'));
 app.use(json());
 //routes
 app.use('/api/contratos', contratosRoutes);
+app.use('/api/productos', productosRoutes);
 
 app.use(errorLog)
 app.use(boomErrorHandler)

@@ -1,4 +1,5 @@
 import { Contratos } from '../models/contratos.models';
+const dayjs = require('dayjs');
 import Boom from '@hapi/boom';
 
 class ConstratoServices {
@@ -57,25 +58,23 @@ class ConstratoServices {
   }
   async buscarCliente(codigoCliente) {
     
-    let contrato = await Contratos.findAll({
+    const contratos = await Contratos.findAll({
       where: {
         codigoCliente,
       },
-      raw : true,
-      nest : true
     });
-    if (!contrato) {
+    if (!contratos) {
       throw Boom.notFound('Cliente con contrato no encontrado');
     }
 
-      const newContrato = contrato.map((data) =>{
-        data.precios = `http://localhost/api/precios/${data.codigo}`
-        console.log(data)
-    
-    })
-    console.log(newContrato);
-    return {...newContrato}; 
-    
+    const newContrato = contratos.map((e) => {
+      return (e.dataValues = {
+        ...e.dataValues,
+        precios: `http://localhost:4000/api/precios/${e.dataValues.codigo}`,
+      });
+    });
+  
+    return newContrato;
   }
 
   async eliminarContrato(codigo) {
@@ -123,9 +122,17 @@ class ConstratoServices {
   }
   async actualizarFecha(codigo,data){
     try {
-      console.log(codigo,data);
+      let fechadia = data
+      console.log(fechadia)
+      
+
+      if(JSON.stringify(fechadia) == '{}'){
+        
+         fechadia = {fechaFinal : await this.obtenerfecha()}
+      }
+
       const contratoUpdateDate = await Contratos.update(
-        {...data},
+        {...fechadia},
         {where:{
           codigo: codigo
         }
@@ -136,7 +143,11 @@ class ConstratoServices {
       throw new Error(error)
     }
   }
-  borrar() {}
+  async obtenerfecha(){ 
+    const dia = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
+    console.log(dia)
+    return dia; 
+  } 
 }
 
 module.exports = ConstratoServices;

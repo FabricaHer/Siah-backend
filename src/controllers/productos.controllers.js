@@ -1,12 +1,13 @@
-import ProductosServices from '../services/producto.service'
+import {ProductosServices} from './../services/producto.service'
 
+const service = new ProductosServices();
 
 
 export async function getProductos(req, res, next) {
     try {
-        const codigo = req.params
-        const descripcion = req.params
-        const producto = await ProductosServices.buscar(codigo,descripcion);
+        const {codigo} = req.params
+        
+        const producto = await service.buscar(codigo);
       res.json(producto);
       
       
@@ -14,3 +15,44 @@ export async function getProductos(req, res, next) {
       next(error);
     }
 }
+//Actualizar Contrato
+
+export async function updateProducto(req, res, next) {
+  try {
+    const { codigo } = req.params;
+  
+    const changes = req.body;
+    const productoUpdated = await service.actualizar(codigo, changes)
+      return res.json({
+        message: 'Project updated',
+        data: productoUpdated
+    })
+      
+    } catch (error) {
+      next(error)
+    }
+     
+  
+
+  }
+  // Actualizar fecha
+  export async function UpdateEstado(req, res, next){
+    try {
+      const { codigo } = req.params;
+      let data = req.body;
+
+    if (JSON.stringify(data) == '{}') {
+      data = { estado: 'I' };
+    }
+    console.log(data)
+    const productoUpdateEstado = await service.actualizarEstado(codigo, data)
+      return res.json({
+        message: 'Contrato actualizado',
+        data: productoUpdateEstado
+      })
+
+      
+    } catch (error) {
+      next(error)
+    }
+  }

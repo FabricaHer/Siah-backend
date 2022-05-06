@@ -1,5 +1,6 @@
 import ConstratoServices from '../services/contrato.service';
 
+
 const services = new ConstratoServices();
 //Buscar por número de Contrato
 
@@ -76,6 +77,7 @@ export async function createContrato(req, res,next) {
 
 export async function updateContrato(req, res, next) {
   try {
+    
     const { codigo } = req.params;
   
     const changes = req.body;
@@ -95,12 +97,9 @@ export async function updateContrato(req, res, next) {
   // Actualizar fecha
   export async function UpdateDate(req, res, next){
     try {
+      
       const { codigo } = req.params;
       let data = req.body;
-
-    if (JSON.stringify(data) == '{}') {
-      data = { fechaFinal: '2000-00-00' };
-    }
     console.log(data)
     const contratoUpdateDate = await services.actualizarFecha(codigo, data)
       return res.json({

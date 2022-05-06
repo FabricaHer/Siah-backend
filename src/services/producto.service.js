@@ -1,20 +1,20 @@
-import { Productos } from '../models/contratos.models';
-// const { Op } = require("sequelize");
+import { Productos } from './../models/productos.models';
+const { Op } = require("sequelize");
 import Boom from '@hapi/boom';
 
-class ProductosServices{
-  async buscar(codigo,descripcion) {
+ export class ProductosServices{
+
+  async buscar(codigo) {
+      console.log(codigo);
     try {
       const productos = await Productos.findAll({
         logging: console.log,
         where: {
-            codigo
-        //     [Op.or]: [{codigo: codigoprodu},
-        //   {descripcion: { [Op.like]: `%${descripcionprodu}%` } }]
+          // codigo: codigo
+            [Op.or]: [{codigo: codigo},
+          { descripcion:{[Op.like]: `%${codigo}%`}  }]
         },
       });
-      console.log(productos);
-      console.log(descripcion);
       if (!productos) {
         throw Boom.notFound('Productos no encontrados');
       }
@@ -23,6 +23,40 @@ class ProductosServices{
       throw new Error(error);
     }
   }
+  async actualizar(codigo, changes) {
+    try {
+      const contratoUpdated = await Productos.update(
+        { ...changes },
+        {
+          where: {
+            codigo: codigo,
+          },
+        }
+      );
+
+      return contratoUpdated;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async actualizarEstado(codigo,data){
+    try {
+      
+      const contratoUpdateEstado = await Productos.update(
+        {...data},
+        {
+          where:{
+          codigo: codigo
+        }
+        },
+      );
+      console.log(contratoUpdateEstado)
+      return contratoUpdateEstado;
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+  borrar() {}
+
 }
 
-module.exports = ProductosServices;
