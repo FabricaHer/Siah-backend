@@ -1,6 +1,6 @@
 import Boom from '@hapi/boom';
-import { preciosDolar } from './../models/preciosDolar.models';
-import { preciosEspeciales } from './../models/preciosEspeciales.model';
+import { preciosDolar } from '../models/MySQL/preciosDolar.models';
+import { preciosEspeciales } from '../models/MySQL/preciosEspeciales.model';
 import { Productos } from '../models/productos.models';
 const {Op} = require ("sequelize");
 

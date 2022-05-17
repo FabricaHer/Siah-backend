@@ -1,16 +1,16 @@
 require('dotenv').config()
 
 import { Sequelize } from 'sequelize'
-const pdatabase = process.env.DBP_DATABASE
-const phost = process.env.DBP_HOST
-const pport = process.env.DBP_PORT
-const pusername = process.env.DBP_USER
-const ppassword = process.env.DBP_PASSWORD
+const database = process.env.POSTGRES_DBP_DATABASE
+const host = process.env.POSTGRES_DBP_HOST
+const port = process.env.POSTGRES_DBP_PORT
+const username = process.env.POSTGRES_DBP_USER
+const password = process.env.POSTGRES_DBP_PASSWORD
 
 
-export const Postgres = new Sequelize(pdatabase,pusername,ppassword,{
-    host: phost,
-    port: pport,
+export const Postgres = new Sequelize(database,username,password,{
+    host: host,
+    port: port,
     dialect: 'postgres'
 
 })

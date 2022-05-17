@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth.config');
 const bcrypt = require('bcrypt');
-import {Usuarios} from '../models/usuarios.models';
+import {Usuarios} from '../models/MySQL/usuarios.models';
 
 
 class UsuariosServices {

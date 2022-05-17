@@ -1,5 +1,5 @@
 import Sequelize  from 'sequelize';
-import { MySQL } from '../database/database';
+import { MySQL } from '../../database/databaseMySQL';
 export const preciosDolar = MySQL.define ('Precios_especiales_dolar', {
     id: {
         type: Sequelize.STRING,

@@ -1,6 +1,6 @@
-import { Contratos } from '../models/contratos.models';
-import {preciosDolar} from '../models/preciosDolar.models';
-import {preciosEspeciales} from '../models/preciosEspeciales.model';
+import { Contratos } from '../models/MySQL/contratos.models';
+import {preciosDolar} from '../models/MySQL/preciosDolar.models';
+import {preciosEspeciales} from '../models/MySQL/preciosEspeciales.model';
 const dayjs = require('dayjs');
 import Boom from '@hapi/boom';
 
