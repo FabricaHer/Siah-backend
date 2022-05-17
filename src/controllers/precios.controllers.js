@@ -2,16 +2,15 @@ import {preciosServices} from './../services/precios.service'
 const service = new preciosServices()
 
 
-export  async function getPreciosContrato(req,res,next){
+export  async function getPreciosProducto(req,res,next){
   
   try {
-    const {codigo} = req.params
-    const {moneda} = req.query
-    const lista = await service.Buscar(codigo,moneda)
+    const {utilidad,estado,grupo,limit} = req.query
+    const precios = await service.buscar(utilidad,estado,grupo,limit)
+    res.json(precios)
 
-    res.json(lista)
   } catch (error) {
-    console.log('error')
+  
     next(error)
   }
 }
