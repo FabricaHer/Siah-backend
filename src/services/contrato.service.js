@@ -24,7 +24,7 @@ class ConstratoServices {
   async buscar(where) {
     try {
       const contratos = await Contratos.findAll({
-        
+        limit: 20,
         where: {
           ...where,
         },
@@ -56,9 +56,10 @@ class ConstratoServices {
 
     return contrato;
   }
-  async buscarCliente(codigoCliente) {
-    
+  async buscarCliente(codigoCliente,limite) {
+    limite = parseInt(limite)
     const contratos = await Contratos.findAll({
+      limit: limite,
       where: {
         codigoCliente,
       },
@@ -127,7 +128,7 @@ class ConstratoServices {
       
 
       if(JSON.stringify(fechadia) == '{}'){
-        
+
          fechadia = {fechaFinal : await this.obtenerfecha()}
       }
 

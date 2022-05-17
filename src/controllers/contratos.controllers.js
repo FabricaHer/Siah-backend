@@ -17,10 +17,13 @@ export async function getOneContratos(req, res, next) {
 //Buscar por codigo de cliente
 
 export async function getContratoClient(req, res, next) {
-  const { codigoCliente } = req.params;
+  let { codigoCliente, limite } = req.query;
+  if (!limite) {
+    limite = 20
+  }
   
   try {
-    const contrato = await services.buscarCliente(codigoCliente);
+    const contrato = await services.buscarCliente(codigoCliente, limite);
     res.json(contrato);
   } catch (error) {
     next(error);
@@ -32,7 +35,6 @@ export async function getContratoClient(req, res, next) {
 
 export async function getMaxContrato(req, res, next) {
   try {
-    // const contratos = await Contratos.max('id', {where : {'vsr_id': 342 }})
     const max = await services.getMaxId();
 
     res.json(max);

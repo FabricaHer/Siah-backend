@@ -5,6 +5,7 @@ import {errorLog,errorHandler,boomErrorHandler,ormErrorHandler} from './middlewa
 import contratosRoutes from './routes/contratos.route';
 import productosRoutes from './routes/productos.route';
 import preciosRouter from './routes/precios.router';
+import usuarioRouter from './routes/usuarios.router';
 
 
 const app = express();
@@ -15,7 +16,8 @@ app.use(json());
 //routes
 app.use('/api/contratos', contratosRoutes);
 app.use('/api/productos', productosRoutes);
-app.use('/api/precios',preciosRouter)
+app.use('/api/precios',preciosRouter);
+app.use('/api/usuario', usuarioRouter);
 
 app.use(errorLog)
 app.use(ormErrorHandler)

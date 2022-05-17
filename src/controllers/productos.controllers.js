@@ -5,9 +5,12 @@ const service = new ProductosServices();
 
 export async function getProductos(req, res, next) {
     try {
-        const {codigo} = req.params
-        
-        const producto = await service.buscar(codigo);
+        let {codigo,descripcion,limite} = req.query
+        if (!limite) {
+          limite = 20
+        }
+        console.log(limite)
+        const producto = await service.buscar(codigo,descripcion,limite);
       res.json(producto);
       
       
@@ -35,7 +38,7 @@ export async function updateProducto(req, res, next) {
   
 
   }
-  // Actualizar fecha
+  // Actualizar estado
   export async function UpdateEstado(req, res, next){
     try {
       const { codigo } = req.params;
