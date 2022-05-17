@@ -130,3 +130,34 @@ export async function updateContrato(req, res, next) {
       next(error)
     }
   }
+  export  async function getPrecios(req,res,next){
+  
+    try {
+      const {codigo} = req.params
+      const {moneda} = req.query 
+      const lista = await services.BuscarPrecios(codigo,moneda.toUpperCase())
+  
+      res.json(lista)
+    } catch (error) {
+      console.log('error')
+      next(error)
+    }
+  }
+  // Actualizar precios
+export async function updatePrecios(req, res, next){
+  try {
+    
+    const { contrato, codigo } = req.params;
+    const body = req.body
+    console.log(contrato, codigo)
+    const precioUpdate = await services.actualizarPrecios(contrato,codigo,body)
+      return res.json({
+        message: 'Precio actualizado',
+        data: precioUpdate
+      })
+      
+    } catch (error) {
+      next(error)
+
+  }
+}

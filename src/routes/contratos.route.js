@@ -16,12 +16,15 @@ import {
   getTipoContratos,
   updateContrato,
   UpdateDate,
+  getPrecios,
+  updatePrecios,
 
 } from '../controllers/contratos.controllers';
 const router = Router();
 
 router.get('/', validatorHandle(getQuerySchema, 'query'), getTipoContratos);
 router.get('/MAX', getMaxContrato);
+router.get('/:codigo/precios',getPrecios)
 router.get(
   '/:codigo',
   validatorHandle(getContratoSchema, 'params'),
@@ -29,6 +32,7 @@ router.get(
 );
 router.get('/cliente/:codigoCliente', validatorHandle(getClientContratoSchema, 'params'), getContratoClient);
 router.post('/', validatorHandle(CreateContratoSchema, 'body'), createContrato);
+router.put('/:contrato/precios/:codigo',updatePrecios)
 router.put('/:codigo',
 validatorHandle(getContratoSchema,'params') ,
 validatorHandle(UpdateContratoSchema, 'body'), updateContrato);
