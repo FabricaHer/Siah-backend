@@ -1,6 +1,5 @@
 import Sequelize  from 'sequelize';
-import { MySQL } from '../database/database';
-import {Productos} from './productos.models'
+import { MySQL } from '../../database/databaseMySQL';
 export const preciosDolar = MySQL.define ('Precios_especiales_dolar', {
     id: {
         type: Sequelize.STRING,
@@ -38,4 +37,4 @@ export const preciosDolar = MySQL.define ('Precios_especiales_dolar', {
     freezeTableName: true
 });
 
-preciosDolar.hasMany(Productos, {foreignKey: 'codigo', as:'Producto'})
+//preciosDolar.hasMany(Productos, {foreignKey: 'codigo', as:'Producto'})

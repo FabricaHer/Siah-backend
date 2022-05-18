@@ -5,7 +5,7 @@ import { getProductoSchema, UpdateProductoSchema } from '../schemas/productos.sc
 
 
 const router = Router();
-router.get('/:codigo', validatorHandle(getProductoSchema, 'params'), getProductos);
+router.get('/', validatorHandle(getProductoSchema, 'query'), getProductos);
 router.put('/:codigo',
 validatorHandle(getProductoSchema,'params'),
 validatorHandle(UpdateProductoSchema, 'body'), updateProducto);

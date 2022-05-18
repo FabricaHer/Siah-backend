@@ -4,15 +4,18 @@ import Boom from '@hapi/boom';
 
  export class ProductosServices{
 
-  async buscar(codigo) {
+  async buscar(codigo,descripcion,limite) {
       console.log(codigo);
+      limite = parseInt(limite)
     try {
+
       const productos = await Productos.findAll({
+        limit: limite,
         logging: console.log,
         where: {
           // codigo: codigo
             [Op.or]: [{codigo: codigo},
-          { descripcion:{[Op.like]: `%${codigo}%`}  }]
+          { descripcion:{[Op.like]: `%${descripcion}%`}  }]
         },
       });
       if (!productos) {

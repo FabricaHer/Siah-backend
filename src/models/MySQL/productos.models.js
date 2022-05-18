@@ -1,5 +1,5 @@
 import Sequelize  from 'sequelize';
-import { MySQL } from '../database/database';
+import { MySQL } from '../database/databaseMySQL';
 
 export const Productos = MySQL.define('DPINV', {
     fechadeActualizacion:{
