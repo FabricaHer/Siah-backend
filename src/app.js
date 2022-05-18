@@ -1,5 +1,6 @@
 import express, { json } from 'express';
 import morgan from 'morgan';
+import cors from 'cors'
 import {errorLog,errorHandler,boomErrorHandler,ormErrorHandler} from './middleware/error.handler'
 //Importing routes
 import contratosRoutes from './routes/contratos.route';
@@ -10,6 +11,7 @@ import preciosRouter from './routes/precios.router';
 const app = express();
 
 //middlewares
+app.use(cors())
 app.use(morgan('dev'));
 app.use(json());
 //routes
