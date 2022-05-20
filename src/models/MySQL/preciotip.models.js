@@ -1,5 +1,5 @@
 import Sequelize  from 'sequelize';
-import { MySQL } from '../database/database';
+import { MySQL } from '../../database/databaseMySQL';
 
 export const PrecioTip = MySQL.define ('DPPRECIOTIP', {
     TPP_CODIGO:{

@@ -1,5 +1,5 @@
 import Sequelize  from 'sequelize';
-import { MySQL } from '../database/databaseMySQL';
+import { MySQL } from '../../database/databaseMySQL';
 
 
 export const Contratos = MySQL.define("TBCONTRATOS", {

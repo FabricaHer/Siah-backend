@@ -22,6 +22,8 @@ const fechaInicio = joi.date()
 const fechaFinal = joi.date()
 const lista = joi.string().min(1).max(1)
 const tipoDocumento = joi.string().min(3).max(3)
+const contrato = joi.number()
+
 
 
 export const getContratoSchema = joi.object({
@@ -67,5 +69,18 @@ export const UpdateContratoSchema = joi.object({
     lista : lista,
     tipoDocumento: tipoDocumento
    
+})
+
+export const getPreciosSchema = joi.object({
+
+    codigo : codigo.required(),
+    moneda : moneda.required()
+
+})
+
+export const updatePreciosSchema = joi.object({
+
+    codigo : codigoCliente,
+    contrato : contrato
 })
 

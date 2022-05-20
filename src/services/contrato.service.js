@@ -3,6 +3,7 @@ import {preciosDolar} from '../models/MySQL/preciosDolar.models';
 import {preciosEspeciales} from '../models/MySQL/preciosEspeciales.model';
 const dayjs = require('dayjs');
 import Boom from '@hapi/boom';
+import { Clientes_hce } from '../models/Postgres/clientes_hce.models';
 
 class ConstratoServices {
   constructor() {
@@ -19,12 +20,19 @@ class ConstratoServices {
     }
   }
 
-  getMaximoId() {
-    return this.idMax;
+  async getMaxContrato() {
+    try {
+      const max = await Contratos.max('codigo');
+      return max
+    } catch (error) {
+      throw Boom.notFound('Codigo no obtenido');
+    }
+  
+  
   }
 
   async buscar(where) {
-    try {
+    try { 
       const contratos = await Contratos.findAll({
         limit: 20,
         where: {
@@ -94,15 +102,30 @@ class ConstratoServices {
 
 }
 
-  async crear(body) {
+  async crear(descripcion,comentario,codigoCliente,moneda,unido,descuento,fechaInicio,fechaFinal,lista,tipoDocumento) {
     try {
+      const codigo = await this.generarNuevoId()
       const newContrato = {
-        codigo: await this.generarNuevoId(),
-        ...body,
+        codigo: codigo,
+        descripcion: descripcion,
+        comentario: comentario,
+        codigoCliente: codigoCliente,
+        moneda: moneda,
+        unido: unido,
+        descuento: descuento,
+        fechaInicio: fechaInicio,
+        fechaFinal: fechaFinal,
+        lista: lista,
+        tipoDocumento: tipoDocumento
       };
-      const data = await Contratos.create(newContrato);
-
-      return data;
+      const datamysql = await Contratos.create(newContrato);
+      const datapostgres = await Clientes_hce.create({
+        hce_id: '95e06c2a-d406-639a-bd47-00b2c1a7f7ac',
+        cliente_id: '678f7d34-bb56-45ed-ba45-ff80a6243943',
+        tipo_lista: '5bcad3b4-35d1-443e-85cf-92fab1a813b2',
+        activo: true,
+        codigo: codigo})
+      return (datamysql,datapostgres);
     } catch (error) {
       throw new Error(error);
     }

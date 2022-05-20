@@ -1,7 +1,7 @@
 import Sequelize  from 'sequelize';
 import { Postgres } from '../../database/databasePostgres';
 export const Clientes_hce = Postgres.define ('cliente_hce', {
-    id: {
+    hce_id: {
         type: Sequelize.STRING,
         primaryKey: true,
         field: 'cliente_hce_id'
