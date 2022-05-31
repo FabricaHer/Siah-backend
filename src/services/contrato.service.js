@@ -1,6 +1,6 @@
 import { Contratos } from '../models/MySQL/contratos.models';
-import {preciosDolar} from '../models/MySQL/preciosDolar.models';
-import {preciosEspeciales} from '../models/MySQL/preciosEspeciales.model';
+import { preciosDolar } from '../models/MySQL/preciosDolar.models';
+import { preciosEspeciales } from '../models/MySQL/preciosEspeciales.model';
 const dayjs = require('dayjs');
 import Boom from '@hapi/boom';
 import { Clientes_hce } from '../models/Postgres/clientes_hce.models';
@@ -23,16 +23,14 @@ class ConstratoServices {
   async getMaxContrato() {
     try {
       const max = await Contratos.max('codigo');
-      return max
+      return max;
     } catch (error) {
       throw Boom.notFound('Codigo no obtenido');
     }
-  
-  
   }
 
   async buscar(where) {
-    try { 
+    try {
       const contratos = await Contratos.findAll({
         limit: 20,
         where: {
@@ -48,7 +46,7 @@ class ConstratoServices {
           precios: `http://localhost:4000/api/precios/${e.dataValues.codigo}`,
         });
       });
-    
+
       return newContratos;
     } catch (error) {
       throw new Error(error);
@@ -66,8 +64,8 @@ class ConstratoServices {
 
     return contrato;
   }
-  async buscarCliente(codigoCliente,limite) {
-    limite = parseInt(limite)
+  async buscarCliente(codigoCliente, limite) {
+    limite = parseInt(limite);
     const contratos = await Contratos.findAll({
       limit: limite,
       where: {
@@ -84,27 +82,36 @@ class ConstratoServices {
         precios: `http://localhost:4000/api/precios/${e.dataValues.codigo}`,
       });
     });
-  
+
     return newContrato;
   }
 
   async eliminarContrato(codigo) {
-    
     const contrato = await Contratos.destroy({
-        where: {
-            codigo
-        }
+      where: {
+        codigo,
+      },
     });
     if (!contrato) {
       throw Boom.notFound('Contrato no encontrado');
     }
     return contrato;
+  }
 
-}
-
-  async crear(descripcion,comentario,codigoCliente,moneda,unido,descuento,fechaInicio,fechaFinal,lista,tipoDocumento) {
+  async crear(
+    descripcion,
+    comentario,
+    codigoCliente,
+    moneda,
+    unido,
+    descuento,
+    fechaInicio,
+    fechaFinal,
+    lista,
+    tipoDocumento
+  ) {
     try {
-      const codigo = await this.generarNuevoId()
+      const codigo = await this.generarNuevoId();
       const newContrato = {
         codigo: codigo,
         descripcion: descripcion,
@@ -116,7 +123,7 @@ class ConstratoServices {
         fechaInicio: fechaInicio,
         fechaFinal: fechaFinal,
         lista: lista,
-        tipoDocumento: tipoDocumento
+        tipoDocumento: tipoDocumento,
       };
       const datamysql = await Contratos.create(newContrato);
       const datapostgres = await Clientes_hce.create({
@@ -124,8 +131,9 @@ class ConstratoServices {
         cliente_id: '678f7d34-bb56-45ed-ba45-ff80a6243943',
         tipo_lista: '5bcad3b4-35d1-443e-85cf-92fab1a813b2',
         activo: true,
-        codigo: codigo})
-      return (datamysql,datapostgres);
+        codigo: codigo,
+      });
+      return datamysql, datapostgres;
     } catch (error) {
       throw new Error(error);
     }
@@ -146,34 +154,33 @@ class ConstratoServices {
       throw new Error(error);
     }
   }
-  async actualizarFecha(codigo,data){
+  async actualizarFecha(codigo, data) {
     try {
-      let fechadia = data
-      console.log(fechadia)
-      
+      let fechadia = data;
+      console.log(fechadia);
 
-      if(JSON.stringify(fechadia) == '{}'){
-
-         fechadia = {fechaFinal : await this.obtenerfecha()}
+      if (JSON.stringify(fechadia) == '{}') {
+        fechadia = { fechaFinal: await this.obtenerfecha() };
       }
 
       const contratoUpdateDate = await Contratos.update(
-        {...fechadia},
-        {where:{
-          codigo: codigo
-        }
+        { ...fechadia },
+        {
+          where: {
+            codigo: codigo,
+          },
         }
       );
       return contratoUpdateDate;
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error);
     }
   }
-  async obtenerfecha(){ 
+  async obtenerfecha() {
     const dia = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
-    console.log(dia)
-    return dia; 
-  } 
+    console.log(dia);
+    return dia;
+  }
 
   async BuscarPrecios(codigo, moneda) {
     try {
@@ -221,44 +228,34 @@ class ConstratoServices {
     }
   }
 
-
- async actualizarPrecios (contrato, codigo, body) {
-   const { isDolar,precio}= body
-   if (isDolar === true ) {
-    const precioActualizado = await preciosDolar.update({precioVenta:precio}, {
-        where: {
-          contrato: contrato,
-          codigoProducto: codigo
+  async actualizarPrecios(contrato, codigo, body) {
+    const { isDolar, precio } = body;
+    if (isDolar === true) {
+      const precioActualizado = await preciosDolar.update(
+        { precioVenta: precio },
+        {
+          where: {
+            contrato: contrato,
+            codigoProducto: codigo,
+          },
         }
-    })
+      );
 
-    return precioActualizado
-   }
-   else {
-      const precioActualizado = await preciosEspeciales.update({precioVenta: precio}, {
-        where: {
-          contrato: contrato,
-          codigoProducto: codigo
+      return precioActualizado;
+    } else {
+      const precioActualizado = await preciosEspeciales.update(
+        { precioVenta: precio },
+        {
+          where: {
+            contrato: contrato,
+            codigoProducto: codigo,
+          },
         }
-      })
-      return precioActualizado
-    
-   }
-     
- }
-
+      );
+      return precioActualizado;
+    }
+  }
 }
-
-
 
 module.exports = ConstratoServices;
 
-
-//const contratoUpdated = await Contratos.update(
- // { ...changes },
- // {
-   //  where: {
-   //    codigo: codigo,   codigoProducto
-   // },
- // }
-//);

@@ -7,7 +7,7 @@ const cedula = joi.number().min(8).max(10);
 const nombre = joi.string().min(5).max(50);
 const fecha_creacion = joi.date();
 const descripcion = joi.number().min(8).max(10);
-const activo = joi.BOOLEAN();
+const activo = joi.boolean();
 
 export const CreateUser = joi.object({
 
