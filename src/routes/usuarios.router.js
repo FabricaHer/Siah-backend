@@ -1,8 +1,10 @@
 import { Router } from "express";
 import {signIn, signUp} from '../controllers/usuarios.controllers';
+import { CreateUser, LoginUser } from "../schemas/usuarios.schema";
+import { validatorHandle } from '../middleware/validator.handler';
 const router = Router();
 
-router.post('/signUp/', signUp);
-router.post('/signIn/', signIn);
+router.post('/signUp/', validatorHandle(CreateUser, 'query'), signUp);
+router.post('/signIn/', validatorHandle(LoginUser, 'query'), signIn);
 
 export default router;

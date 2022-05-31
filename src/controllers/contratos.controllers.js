@@ -35,7 +35,7 @@ export async function getContratoClient(req, res, next) {
 
 export async function getMaxContrato(req, res, next) {
   try {
-    const max = await services.getMaxId();
+    const max = await services.getMaxContrato();
 
     res.json(max);
   } catch (error) {
@@ -65,9 +65,9 @@ export async function getTipoContratos(req, res, next) {
 export async function createContrato(req, res,next) {
   try {
  
-       const body = req.body;
+    let { descripcion,comentario,codigoCliente,moneda,unido,descuento,fechaInicio,fechaFinal,lista,tipoDocumento } = req.query;
        
-    const newContrato = await services.crear(body)
+    const newContrato = await services.crear(descripcion,comentario,codigoCliente,moneda,unido,descuento,fechaInicio,fechaFinal,lista,tipoDocumento)
     res.json(newContrato)
   } catch (error) {
 

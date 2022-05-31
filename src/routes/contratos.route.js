@@ -5,7 +5,9 @@ import {
   CreateContratoSchema,
   getClientContratoSchema,
   getContratoSchema,
-  UpdateContratoSchema
+  UpdateContratoSchema,
+  getPreciosSchema,
+  updatePreciosSchema
 } from '../schemas/contratos.schema';
 import {
   createContrato,
@@ -24,7 +26,7 @@ const router = Router();
 
 router.get('/', validatorHandle(getQuerySchema, 'query'), getTipoContratos);
 router.get('/MAX', getMaxContrato);
-router.get('/:codigo/precios',getPrecios)
+router.get('/:codigo/precios', validatorHandle(getPreciosSchema, 'query'), getPrecios)
 router.get(
   '/:codigo',
   validatorHandle(getContratoSchema, 'params'),
@@ -32,7 +34,7 @@ router.get(
 );
 router.get('/cliente/:codigoCliente', validatorHandle(getClientContratoSchema, 'params'), getContratoClient);
 router.post('/', validatorHandle(CreateContratoSchema, 'body'), createContrato);
-router.put('/:contrato/precios/:codigo',updatePrecios)
+router.put('/:contrato/precios/:codigo', validatorHandle(updatePreciosSchema, 'query'), updatePrecios)
 router.put('/:codigo',
 validatorHandle(getContratoSchema,'params') ,
 validatorHandle(UpdateContratoSchema, 'body'), updateContrato);

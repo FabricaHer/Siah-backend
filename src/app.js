@@ -2,6 +2,7 @@ import express, { json } from 'express';
 import morgan from 'morgan';
 import cors from 'cors'
 import {errorLog,errorHandler,boomErrorHandler,ormErrorHandler} from './middleware/error.handler'
+import bodyParser from 'body-parser';
 //Importing routes
 import contratosRoutes from './routes/contratos.route';
 import clientesRoutes from './routes/clientes.route';
@@ -10,8 +11,9 @@ import preciosRouter from './routes/precios.router';
 import usuarioRouter from './routes/usuarios.router';
 
 
-const app = express();
 
+const app = express();
+app.use(bodyParser.json());
 //middlewares
 app.use(cors())
 app.use(morgan('dev'));
