@@ -1,16 +1,18 @@
 import { Contratos } from '../models/MySQL/contratos.models';
 import { preciosDolar } from '../models/MySQL/preciosDolar.models';
 import { preciosEspeciales } from '../models/MySQL/preciosEspeciales.model';
-const dayjs = require('dayjs');
+import  dayjs  from 'dayjs';
 import Boom from '@hapi/boom';
 import { Clientes_hce } from '../models/Postgres/clientes_hce.models';
 import { Clientes_her } from '../models/Postgres/clientes_her.models';
 import { Tipo_lista } from '../models/Postgres/tipo_lista.models';
 import { Clientes } from '../models/MySQL/clientes.models';
+require('dotenv').config()
 
 class ConstratoServices {
   constructor() {
     this.idMax = 0;
+    this.ip = process.env.IP
   }
 
   async generarNuevoId() {
@@ -22,7 +24,6 @@ class ConstratoServices {
       throw Boom.notFound('Codigo no obtenido');
     }
   }
-
   async getMaxContrato() {
     try {
       const max = await Contratos.max('codigo');
@@ -31,22 +32,25 @@ class ConstratoServices {
       throw Boom.notFound('Codigo no obtenido');
     }
   }
-
   async buscar(data) {
     try { 
       let where = {};
       let order = 'ASC'
       let limite = 20
+      let page = 0
       if (JSON.stringify(data) === '{}'){
         where = {
           lista: 'C'
         }
       }else{
         if(data.limite){
-          limite = data.limite
+          limite =  parseInt(data.limite) 
         }
         if(data.order){
           order = data.order
+        }
+        if (data.page){
+          page = parseInt(data.page)
         }
         if(data.lista){
           where = {...where,
@@ -68,12 +72,14 @@ class ConstratoServices {
               fechaFinal: data.fechaFinal
             }
         }
+
       
         
       }
-      console.log(where);
-      const contratos = await Contratos.findAll({
-        limit:  parseInt(limite),
+     
+      const contratos = await Contratos.findAndCountAll({
+        limit:  limite,
+        offset: page * limite,
         where: {
           ...where
         },
@@ -89,14 +95,33 @@ class ConstratoServices {
       if (!contratos) {
         throw Boom.notFound('Contratos no encontrados');
       }
-      const newContratos = contratos.map((e) => {
+    
+      
+      const newContratos = contratos.rows.map((e) => {
         return (e.dataValues = {
           ...e.dataValues,
           precios: `http://localhost:4000/api/precios/${e.dataValues.codigo}`,
+          
         });
       });
+      
+      
+      const count = contratos.count
+      const pages = Math.ceil(count/limite)
+      const next =  page <= pages ?  page+1 : ''
+      const prev = page > 0 ? page-1:''
 
-      return newContratos;
+      const info = {
+        info : {
+          count : count,
+          pages: pages,
+          next : next,
+          prev: prev
+
+        }
+      }
+
+      return [info,newContratos];
     } catch (error) {
       throw new Error(error);
     }
@@ -134,7 +159,6 @@ class ConstratoServices {
 
     return newContrato;
   }
-
   async eliminarContrato(codigo) {
     const contrato = await Contratos.destroy({
       where: {
@@ -146,7 +170,6 @@ class ConstratoServices {
     }
     return contrato;
   }
-
   async crear(
     descripcion,
     comentario,
@@ -246,15 +269,14 @@ class ConstratoServices {
     console.log(dia);
     return dia;
   }
-
-  async BuscarPrecios(codigo, moneda) {
+  async BuscarPrecios(contrato, moneda) {
     try {
       let precioBolivares = [];
       let precioDolares = [];
       if (moneda == 'B' || !moneda) {
         precioBolivares = await preciosEspeciales.findAll({
           where: {
-            contrato: codigo,
+            contrato: contrato,
           },
         });
         if (!precioBolivares) {
@@ -264,7 +286,7 @@ class ConstratoServices {
       if (moneda == 'D' || !moneda) {
         precioDolares = await preciosDolar.findAll({
           where: {
-            contrato: codigo,
+            contrato: contrato,
           },
         });
         if (!precioDolares) {
@@ -292,7 +314,6 @@ class ConstratoServices {
       throw new Error(error);
     }
   }
-
   async actualizarPrecios(contrato, codigo, body) {
     const { isDolar, precio } = body;
     if (isDolar === true) {

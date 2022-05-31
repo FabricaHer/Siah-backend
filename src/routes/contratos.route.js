@@ -15,7 +15,7 @@ import {
   getContratoCliente,
   getMaxContrato,
   getOneContratos,
-  getTipoContratos,
+  getContratos,
   updateContrato,
   UpdateDate,
   getPrecios,
@@ -23,10 +23,15 @@ import {
 } from '../controllers/contratos.controllers';
 const router = Router();
 
-router.get('/', validatorHandle(getQuerySchema, 'query'), getTipoContratos);
+// modificar el parametro codigo  por contrato
+// eliminar la ruta max 
+router.get('/', validatorHandle(getQuerySchema, 'query'), getContratos);
+// no usada
 router.get('/MAX', getMaxContrato);
+
+
 router.get(
-  '/:codigo/precios',
+  '/:contrato/precios',
   validatorHandle(getPreciosSchema, 'query'),
   getPrecios
 );

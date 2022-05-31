@@ -1,6 +1,8 @@
 import ConstratoServices from '../services/contrato.service';
 
 const services = new ConstratoServices();
+
+
 //Buscar por número de Contrato
 
 export async function getOneContratos(req, res, next) {
@@ -16,7 +18,8 @@ export async function getOneContratos(req, res, next) {
 //Buscar por codigo de cliente
 
 export async function getContratoCliente(req, res, next) {
-  let { codigoCliente, limite } = req.query;
+  let {limite } = req.query;
+  const {codigoCliente} = req.body
   if (!limite) {
     limite = 20;
   }
@@ -42,15 +45,13 @@ export async function getMaxContrato(req, res, next) {
   // console.log(maxID);
 }
 
-//Buscar contratos por lista C
-
-export async function getTipoContratos(req, res, next) {
+//Buscar contratos 
+// modificado por getContrato
+export async function getContratos(req, res, next) {
   try {
-    // let {fechaInicio,fechaFinal,order} = req.query;
+
     const data = req.query
-   // fechaInicio
-  //fechaFinal
-  //order    
+ 
     const contratos = await services.buscar(data);
     res.json(contratos);
   } catch (error) {
@@ -88,7 +89,7 @@ export async function updateContrato(req, res, next) {
     next(error);
   }
 }
-// Actualizar fecha
+// Actualizar fecha del contrato
 export async function UpdateDate(req, res, next) {
   try {
     const { codigo } = req.params;
@@ -118,11 +119,12 @@ export async function deleteContrato(req, res, next) {
     next(error);
   }
 }
+// obtener precios del contrato
 export async function getPrecios(req, res, next) {
   try {
-    const { codigo } = req.params;
+    const { contrato } = req.params;
     const { moneda } = req.query;
-    const lista = await services.BuscarPrecios(codigo, moneda.toUpperCase());
+    const lista = await services.BuscarPrecios(contrato, moneda.toUpperCase());
 
     res.json(lista);
   } catch (error) {
@@ -130,7 +132,7 @@ export async function getPrecios(req, res, next) {
     next(error);
   }
 }
-// Actualizar precios
+// Actualizar precios del contrato
 export async function updatePrecios(req, res, next) {
   try {
     const { contrato, codigo } = req.params;
