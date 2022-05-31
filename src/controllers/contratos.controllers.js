@@ -48,11 +48,11 @@ export async function getMaxContrato(req, res, next) {
 
 export async function getTipoContratos(req, res, next) {
   try {
-    let data = req.query;
-
-    if (JSON.stringify(data) == '{}') {
-      data = { lista: 'C' };
-    }
+    // let {fechaInicio,fechaFinal,order} = req.query;
+    const data = req.query
+   // fechaInicio
+  //fechaFinal
+  //order    
     const contratos = await services.buscar(data);
     res.json(contratos);
   } catch (error) {
@@ -65,7 +65,7 @@ export async function getTipoContratos(req, res, next) {
 export async function createContrato(req, res,next) {
   try {
  
-    let { descripcion,comentario,codigoCliente,moneda,unido,descuento,fechaInicio,fechaFinal,lista,tipoDocumento } = req.query;
+    let { descripcion,comentario,codigoCliente,moneda,unido,descuento,fechaInicio,fechaFinal,lista,tipoDocumento } = req.body;
        
     const newContrato = await services.crear(descripcion,comentario,codigoCliente,moneda,unido,descuento,fechaInicio,fechaFinal,lista,tipoDocumento)
     res.json(newContrato)

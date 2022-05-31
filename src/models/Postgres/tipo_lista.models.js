@@ -1,5 +1,5 @@
 import Sequelize  from 'sequelize';
-import { Postgres } from './../database/databasePostgres';
+import { Postgres } from '../../database/databasePostgres';
 export const Tipo_lista = Postgres.define ('tipo_lista', {
     id: {
         type: Sequelize.STRING,

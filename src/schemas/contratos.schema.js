@@ -23,7 +23,8 @@ const fechaFinal = joi.date()
 const lista = joi.string().min(1).max(1)
 const tipoDocumento = joi.string().min(3).max(3)
 const contrato = joi.number()
-
+const limite = joi.number()
+const order = joi.string()
 
 
 export const getContratoSchema = joi.object({
@@ -36,9 +37,10 @@ export const getClientContratoSchema = joi.object({
 
 export const getQuerySchema = joi.object({
     lista: lista,
-    codigoCliente: codigoCliente,
     fechaInicio:fechaInicio,
-    fechaFinal:fechaFinal
+    fechaFinal:fechaFinal,
+    limite: limite,
+    order: order
 }) 
 
 export const CreateContratoSchema = joi.object({

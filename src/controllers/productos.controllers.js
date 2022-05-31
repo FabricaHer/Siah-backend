@@ -23,7 +23,7 @@ export async function getProductos(req, res, next) {
 export async function updateProducto(req, res, next) {
   try {
     const { codigo } = req.params;
-  
+
     const changes = req.body;
     const productoUpdated = await service.actualizar(codigo, changes)
       return res.json({

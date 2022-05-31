@@ -1,5 +1,6 @@
 import Sequelize  from 'sequelize';
 import { MySQL } from '../../database/databaseMySQL';
+import { Clientes } from './clientes.models';
 
 
 export const Contratos = MySQL.define("TBCONTRATOS", {
@@ -18,7 +19,7 @@ export const Contratos = MySQL.define("TBCONTRATOS", {
     },
     codigoCliente: {
         type: Sequelize.CHAR,
-        field:'CON_CODCLI'
+        field:'CON_CODCLI',
     },
     moneda: {
         type: Sequelize.CHAR,
@@ -33,11 +34,11 @@ export const Contratos = MySQL.define("TBCONTRATOS", {
         field:'CON_DESCU'
     },
     fechaInicio: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         field:'CON_FINI'
     },
     fechaFinal: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         field:'CON_FFINCO'
     },
     lista: {
@@ -53,3 +54,9 @@ export const Contratos = MySQL.define("TBCONTRATOS", {
     timestamps: false,
     freezeTableName: true
 });
+Clientes.hasMany(Contratos, {foreignKey: 'codigoCliente', as: 'cliente_contrato'})
+Contratos.belongsTo(Clientes, {foreignKey: 'codigoCliente', targetKey: 'codigo'})
+// Clientes.hasMany(Contratos, {
+//     foreignKey: 'codigoCliente'
+//   });4016445
+//   Contratos.belongsTo(Clientes);

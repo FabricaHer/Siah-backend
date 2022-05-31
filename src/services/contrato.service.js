@@ -4,6 +4,9 @@ import {preciosEspeciales} from '../models/MySQL/preciosEspeciales.model';
 const dayjs = require('dayjs');
 import Boom from '@hapi/boom';
 import { Clientes_hce } from '../models/Postgres/clientes_hce.models';
+import { Clientes_her } from '../models/Postgres/clientes_her.models';
+import { Tipo_lista } from '../models/Postgres/tipo_lista.models';
+import { Clientes } from '../models/MySQL/clientes.models';
 
 class ConstratoServices {
   constructor() {
@@ -31,13 +34,59 @@ class ConstratoServices {
   
   }
 
-  async buscar(where) {
+  async buscar(data) {
     try { 
+      let where = {};
+      let order = 'ASC'
+      let limite = 20
+      if (JSON.stringify(data) === '{}'){
+        where = {
+          lista: 'C'
+        }
+      }else{
+        if(data.limite){
+          limite = data.limite
+        }
+        if(data.order){
+          order = data.order
+        }
+        if(data.lista){
+          where = {...where,
+            lista: data.lista }
+        }
+        if(data.lista){
+          where = {...where,
+            lista: data.lista }
+        }
+        if(data.fechaInicio){
+          where = {
+            ...where,
+            fechaInicio: data.fechaInicio
+          }
+        } 
+          if(data.fechaFinal){
+            where = {
+              ...where,
+              fechaFinal: data.fechaFinal
+            }
+        }
+      
+        
+      }
+      console.log(where);
       const contratos = await Contratos.findAll({
-        limit: 20,
+        limit:  parseInt(limite),
         where: {
-          ...where,
+          ...where
         },
+        include: {
+          model: Clientes,
+          attributes:['nombre']
+      },
+      order: [
+        ['codigo', order], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+  ],
+  
       });
       if (!contratos) {
         throw Boom.notFound('Contratos no encontrados');
@@ -105,7 +154,8 @@ class ConstratoServices {
   async crear(descripcion,comentario,codigoCliente,moneda,unido,descuento,fechaInicio,fechaFinal,lista,tipoDocumento) {
     try {
       const codigo = await this.generarNuevoId()
-      const newContrato = {
+      console.log(codigoCliente);
+      const datamysql = await Contratos.create({
         codigo: codigo,
         descripcion: descripcion,
         comentario: comentario,
@@ -117,14 +167,30 @@ class ConstratoServices {
         fechaFinal: fechaFinal,
         lista: lista,
         tipoDocumento: tipoDocumento
-      };
-      const datamysql = await Contratos.create(newContrato);
-      const datapostgres = await Clientes_hce.create({
-        hce_id: '95e06c2a-d406-639a-bd47-00b2c1a7f7ac',
-        cliente_id: '678f7d34-bb56-45ed-ba45-ff80a6243943',
-        tipo_lista: '5bcad3b4-35d1-443e-85cf-92fab1a813b2',
+      });
+      
+      const clienteID = await Clientes_her.findOne({
+        where: {
+          codigo_cliente: codigoCliente
+      },
+          attributes: ['id']
+      })
+      Tipo_lista
+      const listaID = await Tipo_lista.findOne({
+        where: {
+          codigo: lista
+      },
+          attributes: ['id']
+      })
+      console.log(clienteID.dataValues.id);
+      console.log('llego', codigo, clienteID);
+      const postgresdata ={
+        cliente_id: clienteID.dataValues.id,
+        tipo_lista: listaID.dataValues.id,
         activo: true,
-        codigo: codigo})
+        codigo_contrato: codigo
+      }
+      const datapostgres = await Clientes_hce.create(postgresdata);
       return (datamysql,datapostgres);
     } catch (error) {
       throw new Error(error);

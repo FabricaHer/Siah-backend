@@ -1,4 +1,4 @@
-import { Productos } from '../models/MySQL/clientes.models';
+import { Productos } from '../models/MySQL/productos.models';
 const { Op } = require("sequelize");
 import Boom from '@hapi/boom';
 
@@ -28,6 +28,7 @@ import Boom from '@hapi/boom';
   }
   async actualizar(codigo, changes) {
     try {
+
       const contratoUpdated = await Productos.update(
         { ...changes },
         {
