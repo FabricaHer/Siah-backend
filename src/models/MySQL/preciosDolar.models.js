@@ -36,3 +36,5 @@ export const preciosDolar = MySQL.define ('Precios_especiales_dolar', {
     timestamps: false,
     freezeTableName: true
 });
+
+//preciosDolar.hasMany(Productos, {foreignKey: 'codigo', as:'Producto'})
