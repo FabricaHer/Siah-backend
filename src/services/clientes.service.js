@@ -1,5 +1,5 @@
 import { Clientes } from '../models/MySQL/clientes.models';
-const {Op} = require("sequelize");
+// const {Op} = require("sequelize");
 import Boom from '@hapi/boom';
 
 class ClientesServices {
@@ -23,18 +23,44 @@ class ClientesServices {
     console.log(clasificacion);
     console.log(limite);
     limite = parseInt(limite)
-    const productos = await Clientes.findAll({
-      limit: limite,
+    let page = 2
+    page = parseInt(page)
+    console.log(limite);
+    const clientes = await Clientes.findAndCountAll({
+      limit: 50,
+      offset: page * limite,
       where: {
         // codigo: codigo
-          [Op.or]: [{clasificacion: clasificacion},
-        { nombre:{[Op.like]: `%${nombre}%`}  }]
+        //   [Op.or]: [{clasificacion: clasificacion},
+        // { nombre:{[Op.like]: `%${nombre}%`}  }]
       },
     });
-    if (!productos) {
+    if (!clientes) {
       throw Boom.notFound('Cliente no encontrados');
     }
-    return productos
+
+    // const newClientes = clientes.rows.map((e) => {
+    //   return (e.dataValues = {
+    //     ...e.dataValues
+    //   });
+    // });
+    // return productos
+    const count = clientes.count
+    const pages = Math.ceil(count/limite)
+    const next =  page <= pages ?  page+1 : 0
+    const prev = page > 0 ? page-1:0
+
+    const info = {
+      
+        count : count,
+        pages: pages,
+        next : next,
+        prev: prev
+
+    
+    }
+
+    return {info: {...info}, results:clientes.rows};
   } catch (error) {
     throw new Error(error);
   }

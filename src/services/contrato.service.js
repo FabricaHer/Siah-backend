@@ -38,11 +38,7 @@ class ConstratoServices {
       let order = 'ASC'
       let limite = 20
       let page = 0
-      if (JSON.stringify(data) === '{}'){
-        where = {
-          lista: 'C'
-        }
-      }else{
+      if (!(JSON.stringify(data) === '{}')){
         if(data.limite){
           limite =  parseInt(data.limite) 
         }
@@ -72,11 +68,8 @@ class ConstratoServices {
               fechaFinal: data.fechaFinal
             }
         }
-
-      
-        
       }
-     
+     console.log(page);
       const contratos = await Contratos.findAndCountAll({
         limit:  limite,
         offset: page * limite,
@@ -108,20 +101,20 @@ class ConstratoServices {
       
       const count = contratos.count
       const pages = Math.ceil(count/limite)
-      const next =  page <= pages ?  page+1 : ''
-      const prev = page > 0 ? page-1:''
+      const next =  page <= pages ?  page+1 : 0
+      const prev = page > 0 ? page-1:0
 
       const info = {
-        info : {
+        
           count : count,
           pages: pages,
           next : next,
           prev: prev
 
-        }
+      
       }
 
-      return [info,newContratos];
+      return {info: {...info}, results:newContratos};
     } catch (error) {
       throw new Error(error);
     }

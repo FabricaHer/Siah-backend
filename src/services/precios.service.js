@@ -96,11 +96,12 @@ export class preciosServices {
       message:  'Producto Creado' ,
     };
   }
-async buscar (utilidad, estado, grupo, limit) {
+async buscar (utilidad, estado, grupo, limit, page) {
     let utilizacion = ''
     let Estado = ''
     let Grupo = ''
     let Limite
+    let Page = ''
 
     if (!utilidad ){
 
@@ -126,12 +127,19 @@ async buscar (utilidad, estado, grupo, limit) {
     else{
       Limite = parseInt(limit) 
     }
+    if (!page){
+      Page = 0
+    }
+    else {
+      Page = parseInt(page)
+    }
 
 
 
     
-    const precios= await Productos.findAll({
+    const precios= await Productos.findAndCountAll({
       limit: Limite,
+      offset: Page * Limite,
        where: 
        {
           grupo: {[Op.like]: Grupo },
@@ -140,8 +148,22 @@ async buscar (utilidad, estado, grupo, limit) {
 
        }
      });
-
-     return precios
+     const count = precios.count
+     const pages = Math.ceil(count/Limite)
+     const next =  page <= pages ?  page+1 : 0
+     const prev = page > 0 ? page-1:0
+ 
+     const info = {
+       
+         count : count,
+         pages: pages,
+         next : next,
+         prev: prev
+ 
+     
+     }
+ 
+     return {info: {...info}, results:precios.rows};
 
 }
 

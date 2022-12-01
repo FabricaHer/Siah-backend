@@ -5,12 +5,12 @@ const service = new ProductosServices();
 
 export async function getProductos(req, res, next) {
     try {
-        let {codigo,descripcion,limite} = req.query
+        let {codigo,descripcion,limite,page} = req.query
         if (!limite) {
           limite = 20
         }
         console.log(limite)
-        const producto = await service.buscar(codigo,descripcion,limite);
+        const producto = await service.buscar(codigo,descripcion,limite,page);
       res.json(producto);
       
       

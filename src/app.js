@@ -9,7 +9,7 @@ import clientesRoutes from './routes/clientes.route';
 import productosRoutes from './routes/productos.route';
 import preciosRouter from './routes/precios.router';
 import usuarioRouter from './routes/usuarios.router';
-
+import documentoRouter from './routes/documentoher.route'
 
 
 const app = express();
@@ -24,6 +24,7 @@ app.use('/api/clientes', clientesRoutes);
 app.use('/api/productos', productosRoutes);
 app.use('/api/precios',preciosRouter);
 app.use('/api/usuario', usuarioRouter);
+app.use('/api/documentoher', documentoRouter);
 
 //middlewares de error
 app.use(errorLog)

@@ -1,7 +1,7 @@
 import joi from 'joi'
 
 
-const seudonimo = joi.string().min(8).max(50);
+const seudonimo = joi.string().min(5).max(50);
 const contrasena = joi.string().min(5).max(50);
 const cedula = joi.number().min(8).max(10);
 const nombre = joi.string().min(5).max(50);
