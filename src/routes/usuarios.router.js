@@ -5,6 +5,6 @@ import { validatorHandle } from '../middleware/validator.handler';
 const router = Router();
 
 router.post('/signUp/', validatorHandle(CreateUser, 'query'), signUp);
-router.post('/signIn/', validatorHandle(LoginUser, 'query'), signIn);
+router.post('/signIn/', validatorHandle(LoginUser, 'body'), signIn);
 
 export default router;

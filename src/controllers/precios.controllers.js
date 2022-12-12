@@ -1,16 +1,16 @@
-import {preciosServices} from './../services/precios.service'
+import {preciosServices} from './../services/MySQL/precios.service'
 const service = new preciosServices()
 
 
 export  async function getPreciosProducto(req,res,next){
   
   try {
-    const {utilidad,estado,grupo,limit} = req.query
-    const precios = await service.buscar(utilidad,estado,grupo,limit)
+    const {utilidad,estado,grupo,limit,page} = req.query
+    const precios = await service.buscar(utilidad,estado,grupo,limit,page)
     res.json(precios)
 
   } catch (error) {
-  
+
     next(error)
   }
 }
