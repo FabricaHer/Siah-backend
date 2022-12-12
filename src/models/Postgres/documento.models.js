@@ -1,12 +1,13 @@
 import Sequelize  from 'sequelize';
 import { Postgres } from '../../database/databasePostgres';
-import { Area_atentcion } from './area_atencion.models';
+import { Area_atencion } from './area_atencion.models';
 import { Estatus_documento } from './estatus_documento.models';
+import { Numero_identificacion } from './numero_identificacion.models';
 import { Pabellon } from './pabellon.models';
 import { Paciente } from './pacientes.models';
 import { Persona } from './persona.models';
 import { Profesional } from './profesional.models';
-import {Ubicacion_paciente} from './ubicacion_paciente.models'
+// import {Ubicacion_paciente} from './ubicacion_paciente.models'
 export const Documento = Postgres.define ('documento', {
     documento_id: {
         type: Sequelize.UUID,
@@ -213,11 +214,11 @@ export const Documento = Postgres.define ('documento', {
 Paciente.hasMany(Documento, {foreignKey: 'paciente_id'})
 Documento.belongsTo(Paciente, {foreignKey: 'paciente_id', targetKey: 'id'})
 
-Ubicacion_paciente.hasMany(Documento, {foreignKey: 'documento_id', as: 'documento_id'})
-Documento.belongsTo(Ubicacion_paciente, {foreignKey: 'documento_id', targetKey: 'documento'})
+// Ubicacion_paciente.hasMany(Documento, {foreignKey: 'documento_id', as: 'documento'})
+// Documento.belongsTo(Ubicacion_paciente, {foreignKey: 'documento_id', targetKey: 'documento_id'})
 
-Area_atentcion.hasMany(Documento, {foreignKey: 'area_atencion_id', as: 'area_atencion'})
-Documento.belongsTo(Area_atentcion, {foreignKey: 'area_atencion_id', targetKey: 'area_atencion_id'})
+Area_atencion.hasMany(Documento, {foreignKey: 'area_atencion_id', as: 'area_atencion'})
+Documento.belongsTo(Area_atencion, {foreignKey: 'area_atencion_id', targetKey: 'area_atencion_id'})
 
 Pabellon.hasMany(Documento, {foreignKey: 'pabellonid', as: 'pabellonid'})
 Documento.belongsTo(Pabellon, {foreignKey: 'pabellonid', targetKey: 'pabellon_id'})
@@ -230,3 +231,6 @@ Documento.belongsTo(Persona, {foreignKey: 'paciente_id', targetKey: 'persona_id'
 
 Estatus_documento.hasMany(Documento, {foreignKey: 'estatus_documentos', as: 'estatus_documentos'})
 Documento.belongsTo(Estatus_documento, {foreignKey: 'estatus_documentos', targetKey: 'estatus_documentos_id'})
+
+Numero_identificacion.hasMany(Documento, {foreignKey: 'paciente_id', as: 'paciente_id'})
+Documento.belongsTo(Numero_identificacion, {foreignKey: 'paciente_id', targetKey: 'persona'})

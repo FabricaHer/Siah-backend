@@ -1,4 +1,4 @@
-import ConstratoServices from '../services/contrato.service';
+import ConstratoServices from '../services/MySQL/contrato.service';
 
 const services = new ConstratoServices();
 

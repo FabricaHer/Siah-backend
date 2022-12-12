@@ -1,6 +1,7 @@
-import { Clientes } from '../models/MySQL/clientes.models';
+import { Clientes } from '../..//models/MySQL/clientes.models';
 // const {Op} = require("sequelize");
 import Boom from '@hapi/boom';
+
 
 class ClientesServices {
   constructor() {

@@ -1,4 +1,4 @@
-import {ProductosServices} from './../services/producto.service'
+import {ProductosServices} from './../services/MySQL/producto.service'
 
 const service = new ProductosServices();
 

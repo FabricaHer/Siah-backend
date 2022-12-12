@@ -1,7 +1,7 @@
 import Sequelize  from 'sequelize';
 import { Postgres } from '../../database/databasePostgres';
 import { Pabellon } from './pabellon.models';
-export const Area_atentcion = Postgres.define ('area_atencion', {
+export const Area_atencion = Postgres.define ('area_atencion', {
     area_atencion_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -35,6 +35,7 @@ export const Area_atentcion = Postgres.define ('area_atencion', {
     freezeTableName: true
 });
 
-Pabellon.hasMany(Area_atentcion, {foreignKey: 'area_atencion_id', as: 'area_atencion_id'})
-Area_atentcion.belongsTo(Pabellon, {foreignKey: 'area_atencion_id', targetKey: 'area_atencion'})
+
+Pabellon.hasMany(Area_atencion, {foreignKey: 'area_atencion_id', as: 'area_atencion_id'})
+Area_atencion.belongsTo(Pabellon, {foreignKey: 'area_atencion_id', targetKey: 'area_atencion'})
 

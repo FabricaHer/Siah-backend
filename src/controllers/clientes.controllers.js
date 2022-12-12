@@ -1,5 +1,5 @@
 
-import ClientesServices from '../services/clientes.service';
+import ClientesServices from '../services/MySQL/clientes.service';
 
 const services = new ClientesServices();
 //Buscar por codigo de Cliente

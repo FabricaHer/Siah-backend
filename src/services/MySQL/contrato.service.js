@@ -1,12 +1,12 @@
-import { Contratos } from '../models/MySQL/contratos.models';
-import { preciosDolar } from '../models/MySQL/preciosDolar.models';
-import { preciosEspeciales } from '../models/MySQL/preciosEspeciales.model';
+import { Contratos } from '../../models/MySQL/contratos.models';
+import { preciosDolar } from '../../models/MySQL/preciosDolar.models';
+import { preciosEspeciales } from '../../models/MySQL/preciosEspeciales.model';
 import  dayjs  from 'dayjs';
 import Boom from '@hapi/boom';
-import { Clientes_hce } from '../models/Postgres/clientes_hce.models';
-import { Clientes_her } from '../models/Postgres/clientes_her.models';
-import { Tipo_lista } from '../models/Postgres/tipo_lista.models';
-import { Clientes } from '../models/MySQL/clientes.models';
+import { Clientes_hce } from '../../models/Postgres/clientes_hce.models';
+import { Clientes_her } from '../../models/Postgres/clientes_her.models';
+import { Tipo_lista } from '../../models/Postgres/tipo_lista.models';
+import { Clientes } from '../../models/MySQL/clientes.models';
 require('dotenv').config()
 
 class ConstratoServices {
@@ -38,7 +38,8 @@ class ConstratoServices {
       let order = 'ASC'
       let limite = 20
       let page = 0
-      if (!(JSON.stringify(data) === '{}')){
+      if (JSON.stringify(data) === '{}'){
+      }else{
         if(data.limite){
           limite =  parseInt(data.limite) 
         }
@@ -68,6 +69,9 @@ class ConstratoServices {
               fechaFinal: data.fechaFinal
             }
         }
+
+      
+        
       }
      console.log(page);
       const contratos = await Contratos.findAndCountAll({

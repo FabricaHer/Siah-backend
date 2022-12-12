@@ -1,4 +1,4 @@
-import { Productos } from '../models/MySQL/productos.models';
+import { Productos } from '../../models/MySQL/productos.models';
 // const { Op } = require("sequelize");
 import Boom from '@hapi/boom';
 

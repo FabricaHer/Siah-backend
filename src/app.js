@@ -10,6 +10,8 @@ import productosRoutes from './routes/productos.route';
 import preciosRouter from './routes/precios.router';
 import usuarioRouter from './routes/usuarios.router';
 import documentoRouter from './routes/documentoher.route'
+import areaRouter from './routes/postgres/area_atencion.route';
+import ubicacionPacienteRouter from './routes/postgres/ubicacion_paciente.route';
 
 
 const app = express();
@@ -25,6 +27,9 @@ app.use('/api/productos', productosRoutes);
 app.use('/api/precios',preciosRouter);
 app.use('/api/usuario', usuarioRouter);
 app.use('/api/documentoher', documentoRouter);
+app.use('/api/area', areaRouter);
+app.use('/api/ubicacion', ubicacionPacienteRouter);
+
 
 //middlewares de error
 app.use(errorLog)

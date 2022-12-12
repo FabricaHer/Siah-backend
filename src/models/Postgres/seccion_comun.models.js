@@ -1,7 +1,7 @@
 import Sequelize  from 'sequelize';
 import { Postgres } from '../../database/databasePostgres';
 import { Pabellon } from './pabellon.models';
-import { Piso } from './piso.models';
+
 
 export const Seccion_comun = Postgres.define ('seccion_comun', {
     seccion_id: {
@@ -11,7 +11,7 @@ export const Seccion_comun = Postgres.define ('seccion_comun', {
         field: 'seccion_id',
         allowNull: false,
     },
-    pabellon_id3:{
+    pabellon_identificacion:{
         type: Sequelize.UUID,
         field:'pabellon_id',
     },
@@ -29,9 +29,6 @@ export const Seccion_comun = Postgres.define ('seccion_comun', {
     freezeTableName: true
 });
 
-Piso.hasMany(Seccion_comun, {foreignKey: 'seccion_id', as: 'seccion_id'})
-Seccion_comun.belongsTo(Piso, {foreignKey: 'seccion_id', targetKey: 'fk_sec_codigo'})
-
-Pabellon.hasMany(Seccion_comun, {foreignKey: 'pabellon_id3', as: 'pabellon_id3'})
-Seccion_comun.belongsTo(Pabellon, {foreignKey: 'pabellon_id3', targetKey: 'pabellon_id'})
+Pabellon.hasMany(Seccion_comun, {foreignKey: 'pabellon_identificacion'})
+Seccion_comun.belongsTo(Pabellon, {foreignKey: 'pabellon_identificacion', targetKey: 'pabellon_id'})
 

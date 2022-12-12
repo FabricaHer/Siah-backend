@@ -1,5 +1,6 @@
 import Sequelize  from 'sequelize';
 import { Postgres } from '../../database/databasePostgres';
+import { Seccion_comun } from './seccion_comun.models';
 export const Piso = Postgres.define ('piso', {
     codigo_piso: {
         type: Sequelize.UUID,
@@ -25,4 +26,8 @@ export const Piso = Postgres.define ('piso', {
     timestamps: false,
     freezeTableName: true
 });
+
+
+Seccion_comun.hasMany(Piso, {foreignKey: 'fk_sec_codigo'})
+Piso.belongsTo(Seccion_comun, {foreignKey: 'fk_sec_codigo', targetKey: 'seccion_id'})
 
