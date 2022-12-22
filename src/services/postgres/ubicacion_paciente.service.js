@@ -74,7 +74,7 @@ class UbicacionPacienteHerServices {
             },
         },
         logging: console.log,
-        include:[{model: Camas,attributes:['descripcion']},{model: Documento, as: 'documento',attributes:['numero_factura','documento_id'],
+        include:[{model: Camas,attributes:['descripcion']},{model: Documento, as: 'documento',attributes:['numero_factura','documento_id','nombre_cliente','diagnostico'],
       include:[
         {
           model: Area_atencion,
